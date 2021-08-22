@@ -1,3 +1,6 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
+
 let mySDKComponents = [];
 
 function generateSession() {
@@ -57,10 +60,10 @@ const RenderComponent = (id, props) => {
 
   if (findComponent && findComponent.Component) {
     let Component = findComponent.Component;
-    ReactDOM.render(
-      React.createElement(Component, props, null),
-      document.getElementById(id)
-    );
+    let element = document.getElementById(id);
+    if (element) {
+      ReactDOM.render(React.createElement(Component, props, null), element);
+    }
   }
 };
 
@@ -88,8 +91,8 @@ document.addEventListener(
   false
 );
 
-var React;
-var ReactDOM;
+// var React;
+// var ReactDOM;
 var RenderOnInit = [];
 export function JinnoInit(ReactNpm, ReactDOMNpm) {
   React = ReactNpm;

@@ -1,6 +1,6 @@
 {
   "name": "jinno",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Jinno integration",
   "main": "index.js",
   "scripts": {
@@ -9,6 +9,10 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/morZloof/Jinno-npm.git"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "keywords": [
     "jinno",
