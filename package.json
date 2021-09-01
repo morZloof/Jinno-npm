@@ -1,6 +1,6 @@
 {
   "name": "jinno",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Jinno integration",
   "main": "index.js",
   "scripts": {

@@ -6,6 +6,15 @@ let mySDKComponents = [];
 function generateSession() {
   return "jinno" + Math.random().toString(36).substr(2, 9);
 }
+document.addEventListener("getAllComponents", function (e) {
+  mySDKComponents.forEach((item) => {
+    let detail = { clientId: item.typeId, params: item.params };
+    var event = new CustomEvent("saveComponent", {
+      detail: detail,
+    });
+    document.dispatchEvent(event);
+  });
+});
 
 export default function Jinno(component, id, props = {}, properties = {}) {
   if (!id && component && component.name) {
@@ -19,18 +28,19 @@ export default function Jinno(component, id, props = {}, properties = {}) {
 
   let componentElementId = generateSession();
 
-  mySDKComponents.push({
-    typeId: id,
-    elementId: componentElementId,
-    Component: component,
-  });
-
   const params = {
     clientId: id,
     title: component && component.name ? component.name : "",
     injectComponentId: componentElementId,
     props: props ? JSON.stringify(props) : null,
   };
+
+  mySDKComponents.push({
+    typeId: id,
+    elementId: componentElementId,
+    Component: component,
+    params,
+  });
 
   if (properties && properties.title) {
     params.title = properties.title;
@@ -44,13 +54,11 @@ export default function Jinno(component, id, props = {}, properties = {}) {
     params.height = properties.height;
   }
 
-  setTimeout(() => {
-    let detail = { clientId: id, params };
-    var event = new CustomEvent("saveComponent", {
-      detail: detail,
-    });
-    document.dispatchEvent(event);
-  }, 1000);
+  let detail = { clientId: id, params };
+  var event = new CustomEvent("saveComponent", {
+    detail: detail,
+  });
+  document.dispatchEvent(event);
 }
 
 const RenderComponent = (id, props) => {
