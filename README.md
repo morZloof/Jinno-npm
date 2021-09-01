@@ -6,14 +6,15 @@ Jinno is a development environment for UI components. It allows you to browse a 
 npm install --save jinno
 
 # Usage 
+1. Install the chrome extension 
+[https://chrome.google.com/webstore/detail/nggpkpfmdkbaakpndblpandmldendooa](https://chrome.google.com/webstore/detail/nggpkpfmdkbaakpndblpandmldendooa)
+
+2. Add your first component to Jinno
 ```
-Import React from 'react'
-Import ReactDOM from 'react-dom'
-Import Jinno, {JinnoInit} from 'jinno'
+Import Jinno from 'jinno'
 
 const MyComponent = ()=>{ return <span>exalmpe</span>}
 
-JinnoInit(React,ReactDOM)//Jinno use your React version
 Jinno(MyComponent,'[component id]')//Choose an Id from your component
 ```
 

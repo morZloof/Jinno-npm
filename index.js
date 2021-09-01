@@ -1,5 +1,5 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from "react";
+import ReactDOM from "react-dom";
 
 let mySDKComponents = [];
 
@@ -103,3 +103,11 @@ export function JinnoInit(ReactNpm, ReactDOMNpm) {
   });
   RenderOnInit = [];
 }
+
+export const showJinno = () => {
+  let scriptLink = "https://jinno-sdk.s3.amazonaws.com/sdk.js";
+  var script = document.createElement("script");
+  script.src = scriptLink;
+
+  document.head.appendChild(script);
+};
