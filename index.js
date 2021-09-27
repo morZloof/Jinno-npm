@@ -22,7 +22,7 @@ export default function Jinno(component, id, props = {}, properties = {}) {
   } else if (!id || !component || (!component.name && !id)) {
     console.error(
       "You have to add id to Jinno, example: Jinno(myComponent,'[myComponentId:string]')"
-    );
+  );
     return;
   }
 
