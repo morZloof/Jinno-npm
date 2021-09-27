@@ -26,6 +26,13 @@ export default function Jinno(component, id, props = {}, properties = {}) {
     return;
   }
 
+  try {
+    id = id.replace(/[^A-Z0-9]/gi, "");
+    id = id.charAt(0).toUpperCase() + id.slice(1);
+  } catch (e) {
+    console.error("Id is invalid, plaese use only chars and numbers");
+  }
+
   let componentElementId = generateSession();
 
   const params = {
