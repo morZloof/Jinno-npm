@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { checkIfToStartHotReload, JinnoInit } from "./JinnoHotReload";
 
 let mySDKComponents = [];
 
@@ -16,13 +17,36 @@ document.addEventListener("getAllComponents", function (e) {
   });
 });
 
-export default function Jinno(component, id, props = {}, properties = {}) {
+export function getMySDKComponents() {
+  return mySDKComponents;
+}
+
+export default function Jinno(
+  component,
+  forwardModule,
+  id,
+  props = {},
+  properties = {}
+) {
   if (!id && component && component.name) {
     id = component.name;
   } else if (!id || !component || (!component.name && !id)) {
     console.error(
-      "You have to add id to Jinno, example: Jinno(myComponent,'[myComponentId:string]')"
-  );
+      "You have to add id to Jinno, example: Jinno(myComponent,null,'[myComponentId:string]')"
+    );
+  }
+
+  let findComponent = mySDKComponents.find((comp) => comp.typeId === id);
+
+  if (findComponent) {
+    findComponent.forwardModule = forwardModule; // update the new module
+    findComponent.Component = component; // update the new component
+    if (findComponent.params) {
+      findComponent.params.props = props; // update the new props
+    }
+
+    checkIfToStartHotReload(id);
+    //if we already added this component
     return;
   }
 
@@ -35,6 +59,14 @@ export default function Jinno(component, id, props = {}, properties = {}) {
 
   let componentElementId = generateSession();
 
+  const computedStyle = window.getComputedStyle(document.body);
+
+  props.hiddenStyle = {
+    direction: computedStyle["direction"],
+    boxSizing: computedStyle["box-sizing"],
+    textAlign: computedStyle["text-align"],
+  };
+
   const params = {
     clientId: id,
     title: component && component.name ? component.name : "",
@@ -42,12 +74,15 @@ export default function Jinno(component, id, props = {}, properties = {}) {
     props: props ? JSON.stringify(props) : null,
   };
 
-  mySDKComponents.push({
+  let data = {
     typeId: id,
     elementId: componentElementId,
     Component: component,
+    forwardModule,
     params,
-  });
+  };
+
+  mySDKComponents.push(data);
 
   if (properties && properties.title) {
     params.title = properties.title;
@@ -61,11 +96,16 @@ export default function Jinno(component, id, props = {}, properties = {}) {
     params.height = properties.height;
   }
 
+  // let classComponent = new JinnoComponent(data);
+  // mySDKComponentsClass.push(classComponent)
+
   let detail = { clientId: id, params };
   var event = new CustomEvent("saveComponent", {
     detail: detail,
   });
   document.dispatchEvent(event);
+
+  checkIfToStartHotReload(id);
 }
 
 const RenderComponent = (id, props) => {
@@ -77,6 +117,12 @@ const RenderComponent = (id, props) => {
     let Component = findComponent.Component;
     let element = document.getElementById(id);
     if (element) {
+      // ReactDOM.render(
+      //   <span style={props.hiddenStyle ? props.hiddenStyle : {}}>
+      //     {React.createElement(Component, props, null)}
+      //   </span>,
+      //   element
+      // );
       ReactDOM.render(React.createElement(Component, props, null), element);
     }
   }
@@ -109,7 +155,7 @@ document.addEventListener(
 // var React;
 // var ReactDOM;
 var RenderOnInit = [];
-export function JinnoInit(ReactNpm, ReactDOMNpm) {
+export function JinnoInitReact(ReactNpm, ReactDOMNpm) {
   React = ReactNpm;
   ReactDOM = ReactDOMNpm;
 
@@ -126,3 +172,5 @@ export const showJinno = () => {
 
   document.head.appendChild(script);
 };
+
+export { JinnoInit };
