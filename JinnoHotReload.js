@@ -47,9 +47,8 @@ export function startHotReload(clientId, onlyUpdate = false) {
   hotReloadOn = true;
   if (forwardModule && forwardModule.hot) {
     if (forwardModule && forwardModule.hot) {
-      // debugger;
       // module.hot.decline();
-      // forwardModule.hot.accept();
+      forwardModule.hot.accept();
     }
     startHotReloadInAllApp();
   }
