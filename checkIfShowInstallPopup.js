@@ -15,6 +15,9 @@ function checkIfComponentIsOpen() {
     //send the api only one time
     return false;
   }
+  setTimeout(() => {
+    sendApi = false;
+  }, 2000);
   sendApi = true;
   return new Promise((resolve) => {
     fetch("http://localhost:5463/whatopen", { method: "POST" })

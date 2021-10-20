@@ -25,6 +25,12 @@ export const stopHotReload = () => {
 export function checkIfToStartHotReload(clientId) {
   if (hotReloadOn) {
     startHotReload(clientId);
+  } else {
+    let detail = { clientId };
+    var event = new CustomEvent("jinnoOpenCanvas", {
+      detail: detail,
+    });
+    document.dispatchEvent(event);
   }
 }
 

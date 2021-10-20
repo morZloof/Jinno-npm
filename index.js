@@ -57,6 +57,7 @@ export default function Jinno(
     findComponent && findComponent.elementId
       ? findComponent.elementId
       : generateSession();
+
   let jinnoFunctions = {
     setProps: (newProps) => {
       setProps(id, componentElementId, newProps);
@@ -142,6 +143,13 @@ function setProps(id, componentElementId, newProps) {
     findComponent && findComponent.params && findComponent.params.props
       ? findComponent.params.props
       : {};
+  if (typeof oldProps === "string") {
+    try {
+      oldProps = JSON.parse(oldProps);
+    } catch (e) {
+      oldProps = {};
+    }
+  }
 
   let setNewProps = { ...oldProps, ...newProps };
   if (findComponent.params) {
@@ -157,7 +165,8 @@ const RenderComponent = (id, props) => {
   });
   if (findComponent && findComponent.Component) {
     if (findComponent.params) {
-      findComponent.params.props = props; //update the props if we have something from the server
+      findComponent.params.props = { ...findComponent.params.props, ...props }; //update the props if we have something from the server
+      props = findComponent.params.props;
     }
 
     let Component = findComponent.Component;
