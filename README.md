@@ -29,5 +29,6 @@ Jinno(MyComponent,[component id])
 ### Component props
 Send the default props of the component
 ```
-Jinno(MyComponent,[component id],{myprops:1})
+let component = Jinno(MyComponent,[component id])
+component.setProps({myprops:1})
 ```
